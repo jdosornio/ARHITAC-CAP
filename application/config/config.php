@@ -36,7 +36,8 @@ $config['base_url'] = 'http://localhost/ARHITAC-CAP';
 |
 */
 $config['index_page'] = 'index.php';
-
+$config['system_name'] = 'Sistema de Capacitación ARHITAC';
+$config['site_name'] = "Sistema de Capacitación ARHITAC";
 /*
 |--------------------------------------------------------------------------
 | URI PROTOCOL
