@@ -6,12 +6,13 @@ class Empleado extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->load->library('session');
-        $this->load->helper('form');
-        $this->load->helper('url');
-        $this->load->database();
-        $this->load->library('form_validation');
-        $this->load->library("pagination");
+        //Cargado automaticamente
+        //$this->load->library('session');
+        //$this->load->helper('form');
+        //$this->load->helper('url');
+        //$this->load->database();
+        //$this->load->library('form_validation');
+        //$this->load->library("pagination");
         $this->load->model('empleado_model');
     }
     
