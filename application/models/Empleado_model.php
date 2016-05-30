@@ -62,6 +62,19 @@ class Empleado_model extends CI_Model {
         return $query->result();
     }
     
+    function get_kardex($numero){
+        $this->db->select('curso.nombre as cur_nombre, fecha_inicial, fecha_final, institucion.nombre as ins_nombre');
+        $this->db->from('empleado');
+        $this->db->join('edicion_curso_empleado', 'empleado.numero = edicion_curso_empleado.empleado_numero');
+        $this->db->join('edicion_curso', 'edicion_curso.id = edicion_curso_empleado.edicion_curso_id');
+        $this->db->join('curso', 'edicion_curso.curso_id = curso.id');
+        $this->db->join('institucion', 'edicion_curso.institucion_id = institucion.id');
+        $this->db->where('empleado.numero', $numero);
+        $this->db->order_by('fecha_inicial', 'asc');
+        $query = $this->db->get();
+        return $query->result();
+    }
+    
     function delete($numero)
     {
         //delete employee record

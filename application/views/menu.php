@@ -42,14 +42,7 @@
                                 </ul>
                             </li>
                             <li>
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Reportes <span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">Something else here</a></li>
-                                    <li role="separator" class="divider"></li>
-                                    <li><a href="#">Separated link</a></li>
-                                    <li role="separator" class="divider"></li>
-                                    <li><a href="#">One more separated link</a></li>
-                                </ul>
+                                <a href="<?php echo base_url('kardex'); ?>">Kardex</a>
                             </li>
                         </ul>
                     </div><!-- /.navbar-collapse -->
