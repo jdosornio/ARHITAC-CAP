@@ -2,7 +2,7 @@
 
 /**
  * Clase: ModeloBase
- * Version: 1.0
+ * Version: 1.1.0
  *
  * Esta clase es utilizada para proporcionar un CRUD genérico utilizando
  * librerías de CodeIgniter.
@@ -47,6 +47,21 @@ class Base extends CI_Model {
     public function get_all($tabla, $attrOrden = 'id') {
         //Ejecuta un query que obtiene todos los elementos ordenados ASC
         $query = $this->db->order_by($attrOrden, 'ASC')->get($tabla);
+
+        return $query->result();
+    }
+
+    /**
+     * Consulta general con paginación
+     *
+     * @param $table: el nombre de la tabla
+     * @param $limit: la cantidad de registros a devolver
+     * @param $start: desde que registro se devolverá
+     * @param string $orderAttr: El nombre de la columna por la cual se ordenará
+     * @return mixed: las filas del query resultante
+     */
+    public function paginate($table, $limit, $start, $orderAttr = 'id') {
+        $query = $this->db->limit($limit, $start)->order_by($orderAttr, 'ASC')->get($table);
 
         return $query->result();
     }
@@ -161,5 +176,16 @@ class Base extends CI_Model {
         {
             $this->db->trans_commit();
         }
+    }
+
+    /**
+     * Regresa el total de filas en esta tabla
+     *
+     * @param $tabla El nombre de la tabla en la que se contarán sus filas
+     * @return mixed El total de filas en la tabla
+     */
+    public function count_rows($tabla) {
+
+        return $this->db->count_all($tabla);
     }
 }

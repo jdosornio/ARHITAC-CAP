@@ -1,26 +1,19 @@
 <?php
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Empleado extends CI_Controller
+class Curso extends CI_Controller
 {
     public function __construct()
     {
         parent::__construct();
-        //Cargado automaticamente
-        //$this->load->library('session');
-        //$this->load->helper('form');
-        //$this->load->helper('url');
-        //$this->load->database();
-        //$this->load->library('form_validation');
-        //$this->load->library("pagination");
-        $this->load->model('empleado_model');
+        $this->load->model('base');
     }
-    
-    public function index(){
-        
+
+    public function index() {
+
         //pagination settings
-        $config['base_url'] = base_url('empleado/index');
-        $config['total_rows'] = $this->db->count_all('empleado');
+        $config['base_url'] = base_url('curso/index');
+        $config['total_rows'] = $this->base->count_rows('curso');
         $config['per_page'] = 15;
         $config["uri_segment"] = 3;
         $choice = $config["total_rows"] / $config["per_page"];
@@ -48,28 +41,28 @@ class Empleado extends CI_Controller
 
         $this->pagination->initialize($config);
         $data['page'] = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
-        
-        $result = $this->empleado_model->get_empleados($config["per_page"], $data['page']);           
-        $data['empleados'] = $result;
+
+        $result = $this->base->paginate('curso', $config["per_page"], $data['page']);
+        $data['cursos'] = $result;
 
         $data['pagination'] = $this->pagination->create_links();
 
         //Cargar menu, view y footer
-        $this->load->view('menu', array('catalogName' => 'Empleado'));
-        $this->load->view('empleado/empleado_view',$data);
+        $this->load->view('menu', array('catalogName' => 'Curso'));
+        $this->load->view('curso/curso_view',$data);
         $this->load->view('footer');
     }
-    
+
     function update($numero){
         $data['numero'] = $numero;
-        
+
         //fetch employee record for the given employee no
         $data['empleado'] = $this->empleado_model->get_empleado($numero);
-        
+
         //Obtener datos para las listas
         $data['departamento'] = $this->empleado_model->get_departamento();
         $data['puesto'] = $this->empleado_model->get_puesto();
-        
+
         //set validation rules
         $this->form_validation->set_rules('nombre', 'Nombre', 'trim|required|callback_verificar_letras_espacio');
         $this->form_validation->set_rules('apellido_paterno', 'Apellido paterno', 'trim|required|callback_verificar_letras_espacio');
@@ -77,7 +70,7 @@ class Empleado extends CI_Controller
         $this->form_validation->set_rules('correo', 'Correo', 'trim|required|valid_email');
         $this->form_validation->set_rules('departamento', 'Departamento', 'callback_varificar_seleccion');
         $this->form_validation->set_rules('puesto', 'Puesto', 'callback_varificar_seleccion');
-        
+
         if ($this->form_validation->run() == FALSE){
             //fail validation
             $this->load->view('empleado/empleado_update_view', $data);
@@ -101,12 +94,12 @@ class Empleado extends CI_Controller
             redirect('empleado');
         }
     }
-    
+
     function add(){
         //Obtener datos para las listas
         $data['departamento'] = $this->empleado_model->get_departamento();
         $data['puesto'] = $this->empleado_model->get_puesto();
-        
+
         //set validation rules
         $this->form_validation->set_rules('numero', 'Número', 'trim|required|numeric');
         $this->form_validation->set_rules('nombre', 'Nombre', 'trim|required|callback_verificar_letras_espacio');
@@ -115,7 +108,7 @@ class Empleado extends CI_Controller
         $this->form_validation->set_rules('correo', 'Correo', 'trim|required|valid_email');
         $this->form_validation->set_rules('departamento', 'Departamento', 'callback_varificar_seleccion');
         $this->form_validation->set_rules('puesto', 'Puesto', 'callback_varificar_seleccion');
-        
+
         if ($this->form_validation->run() == FALSE){
             //fail validation
             $this->load->view('empleado/empleado_insert_view', $data);
@@ -139,7 +132,7 @@ class Empleado extends CI_Controller
             redirect('empleado');
         }
     }
-    
+
     function varificar_seleccion($str){
         if ($str == '-SELECT-')
         {
@@ -164,9 +157,8 @@ class Empleado extends CI_Controller
             return TRUE;
         }
     }
-    
+
     public function delete($numero){
         $this->empleado_model->delete($numero);
-    } 
+    }
 }
-?>
