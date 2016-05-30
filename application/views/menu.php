@@ -35,6 +35,10 @@
                                     <li><a href="<?php echo base_url('empleado'); ?>">Empleados</a></li>
                                     <li role="separator" class="divider"></li>
                                     <li><a href="<?php echo base_url('curso'); ?>">Cursos</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="<?php echo base_url('institucion'); ?>">Instituciones</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="<?php echo base_url('edicion_curso'); ?>">Ediciones de Curso</a></li>
                                 </ul>
                             </li>
                             <li>
