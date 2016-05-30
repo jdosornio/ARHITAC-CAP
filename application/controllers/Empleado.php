@@ -6,13 +6,6 @@ class Empleado extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        //Cargado automaticamente
-        //$this->load->library('session');
-        //$this->load->helper('form');
-        //$this->load->helper('url');
-        //$this->load->database();
-        //$this->load->library('form_validation');
-        //$this->load->library("pagination");
         $this->load->model('empleado_model');
     }
     
@@ -55,7 +48,7 @@ class Empleado extends CI_Controller
         $data['pagination'] = $this->pagination->create_links();
 
         //Cargar menu, view y footer
-        $this->load->view('menu', array('catalogName' => 'Empleado'));
+        $this->load->view('menu', array('title' => 'Empleado'));
         $this->load->view('empleado/empleado_view',$data);
         $this->load->view('footer');
     }
@@ -80,7 +73,10 @@ class Empleado extends CI_Controller
         
         if ($this->form_validation->run() == FALSE){
             //fail validation
+            $this->load->view('menu', array('title' => 'Modificar Empleado'));
             $this->load->view('empleado/empleado_update_view', $data);
+            $this->load->view('footer');
+
         }else{
             //pass validation
             $data = array(
@@ -118,7 +114,10 @@ class Empleado extends CI_Controller
         
         if ($this->form_validation->run() == FALSE){
             //fail validation
+            $this->load->view('menu', array('title' => 'Nuevo Empleado'));
             $this->load->view('empleado/empleado_insert_view', $data);
+            $this->load->view('footer');
+
         }else{
             //pass validation
             $data = array(
@@ -169,4 +168,3 @@ class Empleado extends CI_Controller
         $this->empleado_model->delete($numero);
     } 
 }
-?>

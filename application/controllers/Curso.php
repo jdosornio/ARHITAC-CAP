@@ -48,117 +48,75 @@ class Curso extends CI_Controller
         $data['pagination'] = $this->pagination->create_links();
 
         //Cargar menu, view y footer
-        $this->load->view('menu', array('catalogName' => 'Curso'));
+        $this->load->view('menu', array('title' => 'Curso'));
         $this->load->view('curso/curso_view',$data);
         $this->load->view('footer');
     }
 
-    function update($numero){
-        $data['numero'] = $numero;
+    function update($id){
+        $data['id'] = $id;
 
-        //fetch employee record for the given employee no
-        $data['empleado'] = $this->empleado_model->get_empleado($numero);
+        //obtener registro de curso
+        $data['curso'] = $this->base->get('curso', array('id' => $id))[0];
 
-        //Obtener datos para las listas
-        $data['departamento'] = $this->empleado_model->get_departamento();
-        $data['puesto'] = $this->empleado_model->get_puesto();
-
-        //set validation rules
-        $this->form_validation->set_rules('nombre', 'Nombre', 'trim|required|callback_verificar_letras_espacio');
-        $this->form_validation->set_rules('apellido_paterno', 'Apellido paterno', 'trim|required|callback_verificar_letras_espacio');
-        $this->form_validation->set_rules('apellido_materno', 'Apellido materno', 'trim|required|callback_verificar_letras_espacio');
-        $this->form_validation->set_rules('correo', 'Correo', 'trim|required|valid_email');
-        $this->form_validation->set_rules('departamento', 'Departamento', 'callback_varificar_seleccion');
-        $this->form_validation->set_rules('puesto', 'Puesto', 'callback_varificar_seleccion');
+        $this->form_validation->set_rules('nombre', 'Nombre', 'trim|required');
+        $this->form_validation->set_rules('descripcion', 'Descripción', 'trim|required');
 
         if ($this->form_validation->run() == FALSE){
             //fail validation
-            $this->load->view('empleado/empleado_update_view', $data);
+            $this->load->view('menu', array('title' => 'Modificar Curso'));
+            $this->load->view('curso/curso_update_view', $data);
+            $this->load->view('footer');
+
         }else{
             //pass validation
             $data = array(
                 'nombre' => $this->input->post('nombre'),
-                'apellido_paterno' => $this->input->post('apellido_paterno'),
-                'apellido_materno' => $this->input->post('apellido_materno'),
-                'correo' => $this->input->post('correo'),
-                'departamento_id' => $this->input->post('departamento'),
-                'puesto_id' => $this->input->post('puesto')
+                'descripcion' => $this->input->post('descripcion')
             );
 
             //update employee record
-            $this->db->where('numero', $numero);
-            $this->db->update('empleado', $data);
+            $this->base->update('curso', array('id' => $id), $data);
 
             //display success message
-            $this->session->set_flashdata('msg', '<div class="alert alert-success text-center">Empleado actualizado exitosamente</div>');
-            redirect('empleado');
+            $this->session->set_flashdata('msg', '<div class="alert alert-success text-center">Curso actualizado exitosamente</div>');
+
+            redirect('curso');
         }
     }
 
-    function add(){
-        //Obtener datos para las listas
-        $data['departamento'] = $this->empleado_model->get_departamento();
-        $data['puesto'] = $this->empleado_model->get_puesto();
+    function add() {
 
         //set validation rules
-        $this->form_validation->set_rules('numero', 'Número', 'trim|required|numeric');
-        $this->form_validation->set_rules('nombre', 'Nombre', 'trim|required|callback_verificar_letras_espacio');
-        $this->form_validation->set_rules('apellido_paterno', 'Apellido paterno', 'trim|required|callback_verificar_letras_espacio');
-        $this->form_validation->set_rules('apellido_materno', 'Apellido materno', 'trim|required|callback_verificar_letras_espacio');
-        $this->form_validation->set_rules('correo', 'Correo', 'trim|required|valid_email');
-        $this->form_validation->set_rules('departamento', 'Departamento', 'callback_varificar_seleccion');
-        $this->form_validation->set_rules('puesto', 'Puesto', 'callback_varificar_seleccion');
+        $this->form_validation->set_rules('nombre', 'Nombre', 'trim|required');
+        $this->form_validation->set_rules('descripcion', 'Descripción', 'trim|required');
 
         if ($this->form_validation->run() == FALSE){
             //fail validation
-            $this->load->view('empleado/empleado_insert_view', $data);
-        }else{
+            $this->load->view('menu', array('title' => 'Nuevo Curso'));
+            $this->load->view('curso/curso_insert_view');
+            $this->load->view('footer');
+
+        } else {
             //pass validation
             $data = array(
-                'numero' => $this->input->post('numero'),
                 'nombre' => $this->input->post('nombre'),
-                'apellido_paterno' => $this->input->post('apellido_paterno'),
-                'apellido_materno' => $this->input->post('apellido_materno'),
-                'correo' => $this->input->post('correo'),
-                'departamento_id' => $this->input->post('departamento'),
-                'puesto_id' => $this->input->post('puesto')
+                'descripcion' => $this->input->post('descripcion')
             );
 
             //insert the form data into database
-            $this->db->insert('empleado', $data);
+            $this->base->add('curso', $data);
 
             //display success message
-            $this->session->set_flashdata('msg', '<div class="alert alert-success text-center">Empleado registrado exitosamente</div>');
-            redirect('empleado');
+            $this->session->set_flashdata('msg', '<div class="alert alert-success text-center">Curso registrado exitosamente</div>');
+
+            redirect('curso');
         }
     }
 
-    function varificar_seleccion($str){
-        if ($str == '-SELECT-')
-        {
-            $this->form_validation->set_message('varificar_seleccion', 'Debe seleccionar un %s');
-            return FALSE;
-        }
-        else
-        {
-            return TRUE;
-        }
-    }
+    public function delete($id){
 
-    function verificar_letras_espacio($str)
-    {
-        if (!preg_match("/^([a-zñÑáéíóú ])+$/i", $str))
-        {
-            $this->form_validation->set_message('verificar_letras_espacio', 'Este capo solo permite letras y espacios');
-            return FALSE;
-        }
-        else
-        {
-            return TRUE;
-        }
-    }
-
-    public function delete($numero){
-        $this->empleado_model->delete($numero);
+        $this->base->delete('curso', array('id' => $id));
+        redirect('curso');
     }
 }

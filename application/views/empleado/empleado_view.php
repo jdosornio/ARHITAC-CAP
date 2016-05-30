@@ -1,7 +1,11 @@
         <div id="content">
 
             <div class="container">
-                <a href="empleado/add">Registrar empleado</a>
+                <div class="row">
+                    <h1>Empleados</h1>
+                </div>
+
+                <a href="<?php echo base_url('empleado/add'); ?>" type="button" class="btn btn-default"><i class="fa fa-plus" data-placement="bottom" title="Registrar Empleado"></i></a>
                 <div class="row">
                     <div class="col-md-8">
                         <table class="table table-striped table-hover">
@@ -12,8 +16,8 @@
                                     <th>Correo</th>
                                     <th>Departamento</th>
                                     <th>Puesto</th>
-                                    <th>Actualizar</th>
-                                    <th>Eliminar</th>
+                                    <th></th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -24,8 +28,8 @@
                                     <td><?php echo $empleados[$i]->correo; ?></td>
                                     <td><?php echo $empleados[$i]->dpto_nombre; ?></td>
                                     <td><?php echo $empleados[$i]->pto_nombre; ?></td>
-                                    <td><a href="<?php echo base_url() . "empleado/update/" . $empleados[$i]->numero; ?>">Actualizar</a></td>
-                                    <td><a href="<?php echo base_url() . "empleado/delete/" . $empleados[$i]->numero; ?>">Eliminar</a></td>
+                                    <td><a href="<?php echo base_url('empleado/update') . '/' . $empleados[$i]->numero; ?>" type="button" class="btn btn-default"><i class="fa fa-pencil" data-placement="bottom" title="Modificar"></i></a></td>
+                                    <td><a href="<?php echo base_url('empleado/delete') . '/' . $empleados[$i]->numero; ?>" type="button" class="btn btn-default"><i class="fa fa-trash" data-placement="bottom" title="Eliminar"></i></a></td>
                                 </tr>
                                 <?php } ?>
                             </tbody>

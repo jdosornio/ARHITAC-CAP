@@ -2,7 +2,7 @@
 
 /**
  * Clase: ModeloBase
- * Version: 1.1.0
+ * Version: 1.2.0
  *
  * Esta clase es utilizada para proporcionar un CRUD genérico utilizando
  * librerías de CodeIgniter.
@@ -27,7 +27,7 @@ class Base extends CI_Model {
      * @return mixed Regresa un arreglo de objetos con los datos de cada fila
      * retornada o un arreglo vacío en caso de no existir registros
      */
-    public function get($tabla, $arrAttr){
+    public function get($tabla, $arrAttr) {
         //Ejecuta un query que obtiene los elementos que coincidan con el valor
         $query = $this->db->where($arrAttr)->get($tabla);
 
@@ -114,7 +114,7 @@ class Base extends CI_Model {
      * modificados para guardarlos
      * @return el error en caso de existir (0 es sin errores)
      */
-    public function update($tabla, $arrAttr, $datos){
+    public function update($tabla, $arrAttr, $datos) {
         //Evitar que haya errores, después se utilizará la variable de config
         $this->db->db_debug = false;
 
@@ -148,7 +148,7 @@ class Base extends CI_Model {
      * atributo junto con su valor para eliminarlo de la base de datos
      * (normalmente la llave primaria)
      */
-    public function delete($tabla, $arrAttr){
+    public function delete($tabla, $arrAttr) {
         $this->db->delete($tabla, $arrAttr);
     }
 

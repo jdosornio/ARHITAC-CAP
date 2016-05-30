@@ -1,7 +1,10 @@
         <div id="content">
 
             <div class="container">
-                <a href="curso/add">Registrar curso</a>
+                <div class="row">
+                    <h1>Cursos</h1>
+                </div>
+                <a href="<?php echo base_url('curso/add'); ?>" type="button" class="btn btn-default"><i class="fa fa-plus" data-placement="bottom" title="Registrar Curso"></i></a>
                 <div class="row">
                     <div class="col-md-8">
                         <table class="table table-striped table-hover">
@@ -20,8 +23,8 @@
                                     <td><?php echo $cursos[$i]->id; ?></td>
                                     <td><?php echo $cursos[$i]->nombre; ?></td>
                                     <td><?php echo $cursos[$i]->descripcion; ?></td>
-                                    <td><a href="<?php echo base_url('curso/update') . $cursos[$i]->id; ?>">Actualizar</a></td>
-                                    <td><a href="<?php echo base_url('curso/delete') . $cursos[$i]->id; ?>">Eliminar</a></td>
+                                    <td><a href="<?php echo base_url('curso/update') . '/' . $cursos[$i]->id; ?>" type="button" class="btn btn-default"><i class="fa fa-pencil" data-placement="bottom" title="Modificar"></i></a></td>
+                                    <td><a href="<?php echo base_url('curso/delete') . '/' . $cursos[$i]->id; ?>" type="button" class="btn btn-default"><i class="fa fa-trash" data-placement="bottom" title="Eliminar"></i></a></td>
                                 </tr>
                             <?php } ?>
                             </tbody>

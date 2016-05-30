@@ -3,8 +3,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ARHITAC | <?php echo $catalogName; ?></title>
+    <title>ARHITAC | <?php echo $title; ?></title>
+    <link href="<?php echo base_url('assets/jquery-ui-1.11.4/jquery-ui.min.css'); ?>" rel="stylesheet" type="text/css" />
     <link href="<?php echo base_url("assets/css/bootstrap.css"); ?>" rel="stylesheet" type="text/css" />
+    <link href="<?php echo base_url('assets/css/font-awesome-4.6.3/css/font-awesome.min.css'); ?>" rel="stylesheet" type="text/css" />
     <link href="<?php echo base_url('assets/css/pageStyle.css'); ?>" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -30,11 +32,9 @@
                             <li>
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Registros <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="empleado">Empleados</a></li>
+                                    <li><a href="<?php echo base_url('empleado'); ?>">Empleados</a></li>
                                     <li role="separator" class="divider"></li>
-                                    <li><a href="#">Departamentos</a></li>
-                                    <li role="separator" class="divider"></li>
-                                    <li><a href="#">One more separated link</a></li>
+                                    <li><a href="<?php echo base_url('curso'); ?>">Cursos</a></li>
                                 </ul>
                             </li>
                             <li>
