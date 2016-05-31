@@ -104,13 +104,13 @@ class Empleado extends CI_Controller
         $data['puesto'] = $this->empleado_model->get_puesto();
         
         //set validation rules
-        $this->form_validation->set_rules('numero', 'Número', 'trim|required|numeric');
+        $this->form_validation->set_rules('numero', 'Número', 'trim|required|numeric|callback_verificar_existencia');
         $this->form_validation->set_rules('nombre', 'Nombre', 'trim|required|callback_verificar_letras_espacio');
         $this->form_validation->set_rules('apellido_paterno', 'Apellido paterno', 'trim|required|callback_verificar_letras_espacio');
         $this->form_validation->set_rules('apellido_materno', 'Apellido materno', 'trim|required|callback_verificar_letras_espacio');
         $this->form_validation->set_rules('correo', 'Correo', 'trim|required|valid_email');
-        $this->form_validation->set_rules('departamento', 'Departamento', 'callback_varificar_seleccion');
-        $this->form_validation->set_rules('puesto', 'Puesto', 'callback_varificar_seleccion');
+        $this->form_validation->set_rules('departamento', 'Departamento', 'callback_verificar_seleccion');
+        $this->form_validation->set_rules('puesto', 'Puesto', 'callback_verificar_seleccion');
         
         if ($this->form_validation->run() == FALSE){
             //fail validation
@@ -139,10 +139,10 @@ class Empleado extends CI_Controller
         }
     }
     
-    function varificar_seleccion($str){
+    function verificar_seleccion($str){
         if ($str == '-SELECT-')
         {
-            $this->form_validation->set_message('varificar_seleccion', 'Debe seleccionar un %s');
+            $this->form_validation->set_message('verificar_seleccion', 'Debe seleccionar un %s');
             return FALSE;
         }
         else
@@ -155,7 +155,7 @@ class Empleado extends CI_Controller
     {
         if (!preg_match("/^([a-zñÑáéíóú ])+$/i", $str))
         {
-            $this->form_validation->set_message('verificar_letras_espacio', 'Este capo solo permite letras y espacios');
+            $this->form_validation->set_message('verificar_letras_espacio', 'Este campo solo permite letras y espacios');
             return FALSE;
         }
         else
@@ -163,6 +163,19 @@ class Empleado extends CI_Controller
             return TRUE;
         }
     }
+    
+    function verificar_existencia($str){
+        if ($this->empleado_model->exists($str))
+        {
+            $this->form_validation->set_message('verificar_existencia', 'El número de empleado ya existe');
+            return FALSE;
+        }
+        else
+        {
+            return TRUE;
+        }
+    }
+    
     
     public function delete($numero){
         $this->empleado_model->delete($numero);

@@ -16,7 +16,7 @@ class Kardex extends CI_Controller {
     }
     
     public function generar(){
-        $this->form_validation->set_rules('numero', 'Número', 'trim|required|numeric');
+        $this->form_validation->set_rules('numero', 'Número', 'trim|required|numeric|callback_verificar_existencia');
         
         if ($this->form_validation->run() == FALSE){
             //Cargar menu, view y footer
@@ -36,5 +36,16 @@ class Kardex extends CI_Controller {
         }
     }
     
+    function verificar_existencia($str){
+        if (!$this->empleado_model->exists($str))
+        {
+            $this->form_validation->set_message('verificar_existencia', 'El número de empleado no existe');
+            return FALSE;
+        }
+        else
+        {
+            return TRUE;
+        }
+    }
     
 }
