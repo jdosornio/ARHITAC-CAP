@@ -15,6 +15,19 @@
 
                     <div class="form-group">
                         <div class="row colbox">
+
+                            <div class="col-lg-4 col-sm-4">
+                                <label for="id" class="control-label">ID</label>
+                            </div>
+                            <div class="col-lg-8 col-sm-8">
+                                <input id="id" name="id" type="text" disabled class="form-control" value="<?php echo $edicion_curso->id; ?>" />
+                                <span class="text-danger"><?php echo form_error('id'); ?></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row colbox">
                             <div class="col-lg-4 col-sm-4">
                                 <label for="curso" class="control-label">Curso</label>
                             </div>
