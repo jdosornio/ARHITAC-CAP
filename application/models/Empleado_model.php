@@ -83,4 +83,16 @@ class Empleado_model extends CI_Model {
         redirect('empleado');
     }
     
+    function exists($numero)
+    {
+        $this->db->where('numero',$numero);
+        $query = $this->db->get('empleado');
+        if ($query->num_rows() > 0){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    
 }
