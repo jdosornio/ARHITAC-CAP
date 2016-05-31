@@ -12,7 +12,7 @@
                     <tr class="bg-primary">
                         <th>ID</th>
                         <th>Fecha de Inicio</th>
-                        <th>Fecha de Fin</th>
+                        <th>Fecha de Terminación</th>
                         <th>Curso</th>
                         <th>Lugar</th>
                         <th>Institución</th>

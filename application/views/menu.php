@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +8,10 @@
     <link href="<?php echo base_url("assets/css/bootstrap.css"); ?>" rel="stylesheet" type="text/css" />
     <link href="<?php echo base_url('assets/css/font-awesome-4.6.3/css/font-awesome.min.css'); ?>" rel="stylesheet" type="text/css" />
     <link href="<?php echo base_url('assets/css/pageStyle.css'); ?>" rel="stylesheet" type="text/css" />
+
+    <script src="<?php echo base_url('assets/js/jquery-1.12.4.js'); ?>"></script>
+    <script src="<?php echo base_url('assets/js/bootstrap.js'); ?>"></script>
+    <script src="<?php echo base_url('assets/jquery-ui-1.11.4/jquery-ui.min.js'); ?>"></script>
 </head>
 <body>
     <div id="wrapper">

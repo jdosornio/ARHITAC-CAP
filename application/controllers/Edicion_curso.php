@@ -53,40 +53,55 @@ class Edicion_curso extends CI_Controller
         $this->load->view('footer');
     }
 
-    function update($id){
+    function update($id) {
         $data['id'] = $id;
 
-        //obtener registro de institucion
-        $data['institucion'] = $this->base->get('institucion', array('id' => $id))[0];
+        //obtener registro de edicion curso
+        $data['edicion_curso'] = $this->edicion_curso_model->get(array('id' => $id))[0];
+
+        //Obtener datos para las listas
+        $data['cursos'] = $this->edicion_curso_model->get_cursos();
+        $data['instituciones'] = $this->edicion_curso_model->get_instituciones();
 
         //set validation rules
-        $this->form_validation->set_rules('nombre', 'Nombre', 'trim|required');
-        $this->form_validation->set_rules('telefono', 'Teléfono', 'trim|required|numeric');
-        $this->form_validation->set_rules('correo', 'Correo', 'trim|required|valid_email');
-        $this->form_validation->set_rules('direccion', 'Dirección', 'trim|required');
+        $this->form_validation->set_rules('lugar', 'Lugar', 'trim|required');
+        //Validate that fecha_inicio before fecha_fin
+        $this->form_validation->set_rules('fecha_inicial', 'Fecha de Inicio', 'required|callback_validar_fecha_edicion');
+        $this->form_validation->set_rules('fecha_final', 'Fecha de Terminación', 'required|callback_validar_fechas');
+        $this->form_validation->set_rules('curso', 'Curso', 'callback_verificar_seleccion');
+        $this->form_validation->set_rules('institucion', 'Institucion', 'callback_verificar_seleccion');
 
-        if ($this->form_validation->run() == FALSE){
+        if ($this->form_validation->run() == FALSE) {
+            //Verificar si todavía se puede modificar
+            if (strtotime($data['edicion_curso']->fecha_inicial) >= time()) {
+                $data['allow_modify'] = true;
+            } else {
+                $data['allow_modify'] = false;
+                $this->session->set_flashdata('msg', '<div class="alert alert-info text-center">No es posible modificar ediciones de curso pasadas</div>');
+            }
+
             //fail validation
-            $this->load->view('menu', array('title' => 'Modificar Institución'));
-            $this->load->view('institucion/institucion_update_view', $data);
+            $this->load->view('menu', array('title' => 'Modificar Edición Curso'));
+            $this->load->view('edicion_curso/edicion_curso_update_view', $data);
             $this->load->view('footer');
 
         }else{
             //pass validation
             $data = array(
-                'nombre' => $this->input->post('nombre'),
-                'telefono' => $this->input->post('telefono'),
-                'correo' => $this->input->post('correo'),
-                'direccion' => $this->input->post('direccion'),
+                'fecha_inicial' => $this->input->post('fecha_inicial'),
+                'fecha_final' => $this->input->post('fecha_final'),
+                'curso_id' => $this->input->post('curso'),
+                'lugar' => $this->input->post('lugar'),
+                'institucion_id' => $this->input->post('institucion')
             );
 
-            //update employee record
-            $this->base->update('institucion', array('id' => $id), $data);
+            //update edicion_curso record
+            $this->edicion_curso_model->update(array('id' => $id), $data);
 
             //display success message
-            $this->session->set_flashdata('msg', '<div class="alert alert-success text-center">Institución actualizada exitosamente</div>');
+            $this->session->set_flashdata('msg', '<div class="alert alert-success text-center">Edición de Curso modificada exitosamente</div>');
 
-            redirect('institucion');
+            redirect('edicion_curso');
         }
     }
 
@@ -97,13 +112,16 @@ class Edicion_curso extends CI_Controller
 
         //set validation rules
         $this->form_validation->set_rules('lugar', 'Lugar', 'trim|required');
+        //Validate that fecha_inicio before fecha_fin
+        $this->form_validation->set_rules('fecha_inicial', 'Fecha de Inicio', 'required|callback_validar_fecha_edicion');
+        $this->form_validation->set_rules('fecha_final', 'Fecha de Terminación', 'required|callback_validar_fechas');
         $this->form_validation->set_rules('curso', 'Curso', 'callback_verificar_seleccion');
         $this->form_validation->set_rules('institucion', 'Institucion', 'callback_verificar_seleccion');
 
         if ($this->form_validation->run() == FALSE) {
             //fail validation
             $this->load->view('menu', array('title' => 'Nueva Edición Curso'));
-            $this->load->view('edicion_curso/edicion_curso_insert_view');
+            $this->load->view('edicion_curso/edicion_curso_insert_view', $data);
             $this->load->view('footer');
 
         } else {
@@ -138,9 +156,36 @@ class Edicion_curso extends CI_Controller
         }
     }
 
-    public function delete($id) {
+    function validar_fechas() {
+        $fecha_inicial = strtotime($this->input->post('fecha_inicial'));
+        $fecha_final = strtotime($this->input->post('fecha_final'));
 
-        $this->base->delete('institucion', array('id' => $id));
-        redirect('institucion');
+        //Las fechas son válidas sólo si se registran ediciones futuras y además que no esté antes el final que el inicio
+        if ($fecha_inicial <= $fecha_final) {
+            return TRUE;
+        }
+        else {
+            $this->form_validation->set_message('validar_fechas', 'La fecha de terminación debe ser después de la fecha de inicio');
+            return FALSE;
+        }
+    }
+
+    function validar_fecha_edicion() {
+        $fecha_inicial = strtotime($this->input->post('fecha_inicial'));
+
+        //Las fechas son válidas sólo si se registran ediciones futuras y además que no esté antes el final que el inicio
+        if ($fecha_inicial >= time()) {
+            return TRUE;
+        }
+        else {
+            $this->form_validation->set_message('validar_fecha_edicion', 'Sólo se pueden registrar ediciones de curso futuras');
+            return FALSE;
+        }
+    }
+
+    function delete($id) {
+
+        $this->edicion_curso_model->delete(array('id' => $id));
+        redirect('edicion_curso');
     }
 }

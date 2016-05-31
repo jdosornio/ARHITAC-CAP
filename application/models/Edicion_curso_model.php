@@ -21,8 +21,20 @@ class Edicion_curso_model extends Base {
         return $query->result();
     }
 
+    function get($arrAttr, $table = '') {
+        return parent::get('edicion_curso', $arrAttr);
+    }
+
     function add($datos, $tabla = '') {
         return parent::add('edicion_curso', $datos);
+    }
+
+    function update($arrAttr, $datos, $table = '') {
+        return parent::update('edicion_curso', $arrAttr, $datos);
+    }
+
+    function delete($arrAttr, $table = '') {
+        parent::delete('edicion_curso', $arrAttr);
     }
 
     function get_cursos() {
@@ -52,22 +64,5 @@ class Edicion_curso_model extends Base {
         }
         return array_combine($ids, $nombres);
     }
-//
-//    //fetch employee record by employee no
-//    function get_empleado($numero)
-//    {
-//        $this->db->where('numero', $numero);
-//        $this->db->from('empleado');
-//        $query = $this->db->get();
-//        return $query->result();
-//    }
-//
-//    function delete($numero)
-//    {
-//        //delete employee record
-//        $this->db->where('numero', $numero);
-//        $this->db->delete('empleado');
-//        redirect('empleado');
-//    }
 
 }
