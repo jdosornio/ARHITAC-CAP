@@ -10,7 +10,7 @@
                         
                         <?php
                         $attributes = array("class" => "form-horizontal", "id" => "puestoform", "name" => "puestoform");
-                        echo form_open('puesto/update' . $id, $attributes);?>
+                        echo form_open('puesto/update/' . $id, $attributes);?>
                         <fieldset>
 
                             <div class="form-group">
