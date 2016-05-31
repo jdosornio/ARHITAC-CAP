@@ -99,7 +99,7 @@ class Edicion_curso extends CI_Controller
             $this->edicion_curso_model->update(array('id' => $id), $data);
 
             //display success message
-            $this->session->set_flashdata('msg', '<div class="alert alert-success text-center">Edición de Curso modificada exitosamente</div>');
+            $this->session->set_flashdata('msg', '<div class="alert alert-success fade in text-center"><a href="#" class="close" data-dismiss="alert">&times;</a>Edición de Curso modificado exitosamente!</div>');
 
             redirect('edicion_curso');
         }
@@ -138,7 +138,7 @@ class Edicion_curso extends CI_Controller
             $this->edicion_curso_model->add($data);
 
             //display success message
-            $this->session->set_flashdata('msg', '<div class="alert alert-success text-center">Edición de Curso registrada exitosamente</div>');
+            $this->session->set_flashdata('msg', '<div class="alert alert-success fade in text-center"><a href="#" class="close" data-dismiss="alert">&times;</a>Edición de Curso registrado exitosamente!</div>');
 
             redirect('edicion_curso');
         }
@@ -185,7 +185,13 @@ class Edicion_curso extends CI_Controller
 
     function delete($id) {
 
-        $this->edicion_curso_model->delete(array('id' => $id));
+        if ( $this->edicion_curso_model->get(array('edicion_curso_id' => $id), 'edicion_curso_empleado') ) {
+            //Si existen relaciones no eliminar
+            $this->session->set_flashdata('msg', '<div class="alert alert-danger fade in text-center"><a href="#" class="close" data-dismiss="alert">&times;</a>La edición del curso a eliminar tiene empleados registrados!</div>');
+        } else {
+            $this->edicion_curso_model->delete(array('id' => $id));
+        }
+
         redirect('edicion_curso');
     }
 }

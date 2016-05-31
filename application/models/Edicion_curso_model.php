@@ -21,8 +21,8 @@ class Edicion_curso_model extends Base {
         return $query->result();
     }
 
-    function get($arrAttr, $table = '') {
-        return parent::get('edicion_curso', $arrAttr);
+    function get($arrAttr, $table = 'edicion_curso') {
+        return parent::get($table, $arrAttr);
     }
 
     function add($datos, $tabla = '') {

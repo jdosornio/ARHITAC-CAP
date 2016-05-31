@@ -4,6 +4,7 @@
                 <div class="row">
                     <h1>Puestos</h1>
                 </div>
+                <?php echo $this->session->flashdata('msg'); ?>
                 <a href="<?php echo base_url('puesto/add'); ?>" type="button" class="btn btn-default"><i class="fa fa-plus" data-placement="bottom" title="Registrar puesto"></i></a>
                 <div class="row">
                     <div class="col-md-8">

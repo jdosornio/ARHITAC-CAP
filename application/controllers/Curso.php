@@ -3,8 +3,7 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Curso extends CI_Controller
 {
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
         $this->load->model('base');
     }
@@ -62,13 +61,13 @@ class Curso extends CI_Controller
         $this->form_validation->set_rules('nombre', 'Nombre', 'trim|required');
         $this->form_validation->set_rules('descripcion', 'Descripción', 'trim|required');
 
-        if ($this->form_validation->run() == FALSE){
+        if ($this->form_validation->run() == FALSE) {
             //fail validation
             $this->load->view('menu', array('title' => 'Modificar Curso'));
             $this->load->view('curso/curso_update_view', $data);
             $this->load->view('footer');
 
-        }else{
+        } else {
             //pass validation
             $data = array(
                 'nombre' => $this->input->post('nombre'),
@@ -79,7 +78,7 @@ class Curso extends CI_Controller
             $this->base->update('curso', array('id' => $id), $data);
 
             //display success message
-            $this->session->set_flashdata('msg', '<div class="alert alert-success text-center">Curso actualizado exitosamente</div>');
+            $this->session->set_flashdata('msg', '<div class="alert alert-success fade in text-center"><a href="#" class="close" data-dismiss="alert">&times;</a>Curso modificado exitosamente!</div>');
 
             redirect('curso');
         }
@@ -91,7 +90,7 @@ class Curso extends CI_Controller
         $this->form_validation->set_rules('nombre', 'Nombre', 'trim|required');
         $this->form_validation->set_rules('descripcion', 'Descripción', 'trim|required');
 
-        if ($this->form_validation->run() == FALSE){
+        if ($this->form_validation->run() == FALSE) {
             //fail validation
             $this->load->view('menu', array('title' => 'Nuevo Curso'));
             $this->load->view('curso/curso_insert_view');
@@ -108,15 +107,21 @@ class Curso extends CI_Controller
             $this->base->add('curso', $data);
 
             //display success message
-            $this->session->set_flashdata('msg', '<div class="alert alert-success text-center">Curso registrado exitosamente</div>');
+            $this->session->set_flashdata('msg', '<div class="alert alert-success fade in text-center"><a href="#" class="close" data-dismiss="alert">&times;</a>Curso registrado exitosamente!</div>');
 
             redirect('curso');
         }
     }
 
-    public function delete($id){
+    public function delete($id) {
 
-        $this->base->delete('curso', array('id' => $id));
+        if ( $this->base->get('edicion_curso', array('curso_id' => $id)) ) {
+            //Si existen relaciones no eliminar
+            $this->session->set_flashdata('msg', '<div class="alert alert-danger fade in text-center"><a href="#" class="close" data-dismiss="alert">&times;</a>El curso a eliminar tiene ediciones registradas!</div>');
+        } else {
+            $this->base->delete('curso', array('id' => $id));
+        }
+
         redirect('curso');
     }
 }

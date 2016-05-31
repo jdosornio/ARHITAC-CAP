@@ -77,7 +77,7 @@ class Puesto extends CI_Controller
             $this->base->update('puesto', array('id' => $id), $data);
 
             //display success message
-            $this->session->set_flashdata('msg', '<div class="alert alert-success text-center">Puesto actualizado exitosamente</div>');
+            $this->session->set_flashdata('msg', '<div class="alert alert-success fade in text-center"><a href="#" class="close" data-dismiss="alert">&times;</a>Puesto modificado exitosamente!</div>');
 
             redirect('puesto');
         }
@@ -104,7 +104,7 @@ class Puesto extends CI_Controller
             $this->base->add('puesto', $data);
 
             //display success message
-            $this->session->set_flashdata('msg', '<div class="alert alert-success text-center">Puesto registrado exitosamente</div>');
+            $this->session->set_flashdata('msg', '<div class="alert alert-success fade in text-center"><a href="#" class="close" data-dismiss="alert">&times;</a>Puesto registrado exitosamente!</div>');
 
             redirect('puesto');
         }
@@ -112,7 +112,14 @@ class Puesto extends CI_Controller
 
     public function delete($id){
 
-        $this->base->delete('puesto', array('id' => $id));
+        if ( $this->base->get('empleado', array('puesto_id' => $id)) ) {
+            //Si existen relaciones no eliminar
+            $this->session->set_flashdata('msg', '<div class="alert alert-danger fade in text-center"><a href="#" class="close" data-dismiss="alert">&times;</a>El puesto a eliminar tiene empleados registrados!</div>');
+
+        } else {
+            $this->base->delete('puesto', array('id' => $id));
+        }
+
         redirect('puesto');
     }
 }

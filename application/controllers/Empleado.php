@@ -68,8 +68,8 @@ class Empleado extends CI_Controller
         $this->form_validation->set_rules('apellido_paterno', 'Apellido paterno', 'trim|required|callback_verificar_letras_espacio');
         $this->form_validation->set_rules('apellido_materno', 'Apellido materno', 'trim|required|callback_verificar_letras_espacio');
         $this->form_validation->set_rules('correo', 'Correo', 'trim|required|valid_email');
-        $this->form_validation->set_rules('departamento', 'Departamento', 'callback_varificar_seleccion');
-        $this->form_validation->set_rules('puesto', 'Puesto', 'callback_varificar_seleccion');
+        $this->form_validation->set_rules('departamento', 'Departamento', 'callback_verificar_seleccion');
+        $this->form_validation->set_rules('puesto', 'Puesto', 'callback_verificar_seleccion');
         
         if ($this->form_validation->run() == FALSE){
             //fail validation
@@ -93,7 +93,7 @@ class Empleado extends CI_Controller
             $this->db->update('empleado', $data);
 
             //display success message
-            $this->session->set_flashdata('msg', '<div class="alert alert-success text-center">Empleado actualizado exitosamente</div>');
+            $this->session->set_flashdata('msg', '<div class="alert alert-success fade in text-center"><a href="#" class="close" data-dismiss="alert">&times;</a>Empleado modificado exitosamente!</div>');
             redirect('empleado');
         }
     }
@@ -134,7 +134,7 @@ class Empleado extends CI_Controller
             $this->db->insert('empleado', $data);
 
             //display success message
-            $this->session->set_flashdata('msg', '<div class="alert alert-success text-center">Empleado registrado exitosamente</div>');
+            $this->session->set_flashdata('msg', '<div class="alert alert-success fade in text-center"><a href="#" class="close" data-dismiss="alert">&times;</a>Empleado registrado exitosamente!</div>');
             redirect('empleado');
         }
     }
@@ -177,7 +177,17 @@ class Empleado extends CI_Controller
     }
     
     
-    public function delete($numero){
-        $this->empleado_model->delete($numero);
+    public function delete($numero) {
+        $this->load->model('base');
+
+        if ( $this->base->get('edicion_curso_empleado', array('empleado_numero' => $numero)) ) {
+            //Si existen relaciones no eliminar
+            $this->session->set_flashdata('msg', '<div class="alert alert-danger fade in text-center"><a href="#" class="close" data-dismiss="alert">&times;</a>El empleado a eliminar tiene ediciones de curso registrados!</div>');
+
+        } else {
+            $this->empleado_model->delete($numero);
+        }
+
+        redirect('empleado');
     } 
 }

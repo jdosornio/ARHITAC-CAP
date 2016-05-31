@@ -4,7 +4,7 @@
                 <div class="row">
                     <h1>Empleados</h1>
                 </div>
-
+                <?php echo $this->session->flashdata('msg'); ?>
                 <a href="<?php echo base_url('empleado/add'); ?>" type="button" class="btn btn-default"><i class="fa fa-plus" data-placement="bottom" title="Registrar Empleado"></i></a>
                 <div class="row">
                     <div class="col-md-8">

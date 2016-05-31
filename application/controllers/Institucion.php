@@ -84,7 +84,7 @@ class Institucion extends CI_Controller
             $this->base->update('institucion', array('id' => $id), $data);
 
             //display success message
-            $this->session->set_flashdata('msg', '<div class="alert alert-success text-center">Institución actualizada exitosamente</div>');
+            $this->session->set_flashdata('msg', '<div class="alert alert-success fade in text-center"><a href="#" class="close" data-dismiss="alert">&times;</a>Institución modificada exitosamente!</div>');
 
             redirect('institucion');
         }
@@ -117,7 +117,7 @@ class Institucion extends CI_Controller
             $this->base->add('institucion', $data);
 
             //display success message
-            $this->session->set_flashdata('msg', '<div class="alert alert-success text-center">Institución registrada exitosamente</div>');
+            $this->session->set_flashdata('msg', '<div class="alert alert-success fade in text-center"><a href="#" class="close" data-dismiss="alert">&times;</a>Institución registrada exitosamente!</div>');
 
             redirect('institucion');
         }
@@ -125,7 +125,14 @@ class Institucion extends CI_Controller
 
     public function delete($id) {
 
-        $this->base->delete('institucion', array('id' => $id));
+        if ( $this->base->get('edicion_curso', array('institucion_id' => $id)) ) {
+            //Si existen relaciones no eliminar
+            $this->session->set_flashdata('msg', '<div class="alert alert-danger fade in text-center"><a href="#" class="close" data-dismiss="alert">&times;</a>La institución a eliminar tiene ediciones de curso registrados!</div>');
+
+        } else {
+            $this->base->delete('institucion', array('id' => $id));
+        }
+
         redirect('institucion');
     }
 }
