@@ -194,4 +194,33 @@ class Edicion_curso extends CI_Controller
 
         redirect('edicion_curso');
     }
+
+    function ver_lista($id) {
+        $data['edicion_curso'] = $this->edicion_curso_model->get(array('id' => $id))[0];
+        $data['cursos'] = $this->edicion_curso_model->get_cursos();
+        $data['instituciones'] = $this->edicion_curso_model->get_instituciones();
+        $data['free_emp'] = $this->edicion_curso_model->get_empleados_not_in($id);
+
+        $data['empleados'] = $this->edicion_curso_model->get_empleados($id);
+
+        $this->load->view('menu', array('title' => 'Lista de Asistencia'));
+        $this->load->view('edicion_curso/update_lista_view', $data);
+        $this->load->view('footer');
+    }
+
+    function remover_empleado($ed_id, $emp_num) {
+        
+        $this->edicion_curso_model->delete(array('edicion_curso_id' => $ed_id, 'empleado_numero' => $emp_num),
+            'edicion_curso_empleado');
+
+        redirect('edicion_curso/ver_lista/' . $ed_id);
+    }
+
+    function agregar_empleado($ed_id, $emp_num) {
+
+        $this->edicion_curso_model->add(array('edicion_curso_id' => $ed_id, 'empleado_numero' => $emp_num),
+            'edicion_curso_empleado');
+
+        redirect('edicion_curso/ver_lista/' . $ed_id);
+    }
 }

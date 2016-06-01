@@ -25,16 +25,16 @@ class Edicion_curso_model extends Base {
         return parent::get($table, $arrAttr);
     }
 
-    function add($datos, $tabla = '') {
-        return parent::add('edicion_curso', $datos);
+    function add($datos, $tabla = 'edicion_curso') {
+        return parent::add($tabla, $datos);
     }
 
     function update($arrAttr, $datos, $table = '') {
         return parent::update('edicion_curso', $arrAttr, $datos);
     }
 
-    function delete($arrAttr, $table = '') {
-        parent::delete('edicion_curso', $arrAttr);
+    function delete($arrAttr, $table = 'edicion_curso') {
+        parent::delete($table, $arrAttr);
     }
 
     function get_cursos() {
@@ -63,6 +63,26 @@ class Edicion_curso_model extends Base {
             array_push($nombres, $result[$i]->nombre);
         }
         return array_combine($ids, $nombres);
+    }
+
+    function get_empleados($id) {
+        $query = $this->db->select("e.numero AS e_num, concat(e.nombre, ' ', e.apellido_paterno, ' ', e.apellido_materno) AS e_nom, p.nombre AS p_nom, d.nombre AS d_nom")
+            ->from('empleado AS e')->join('puesto AS p', 'e.puesto_id = p.id')
+            ->join('departamento AS d', 'e.departamento_id = d.id')
+            ->where("e.numero IN (SELECT empleado_numero FROM edicion_curso_empleado WHERE edicion_curso_id = " . $id . ")")
+            ->order_by('e.numero', 'ASC')->get();
+
+        return $query->result();
+    }
+
+    function get_empleados_not_in($id) {
+        $query = $this->db->select("e.numero AS e_num, concat(e.nombre, ' ', e.apellido_paterno, ' ', e.apellido_materno) AS e_nom, p.nombre AS p_nom, d.nombre AS d_nom")
+            ->from('empleado AS e')->join('puesto AS p', 'e.puesto_id = p.id')
+            ->join('departamento AS d', 'e.departamento_id = d.id')
+            ->where("e.numero NOT IN (SELECT empleado_numero FROM edicion_curso_empleado WHERE edicion_curso_id = " . $id . ")")
+            ->order_by('e.numero', 'ASC')->get();
+
+        return $query->result();
     }
 
 }

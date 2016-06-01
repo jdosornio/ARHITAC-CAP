@@ -19,6 +19,7 @@
                         <th>Institución</th>
                         <th></th>
                         <th></th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -32,6 +33,7 @@
                             <td><?php echo $ediciones_curso[$i]->i_nombre; ?></td>
                             <td><a href="<?php echo base_url('edicion_curso/update') . '/' . $ediciones_curso[$i]->id; ?>" type="button" class="btn btn-default"><i class="fa fa-pencil" data-placement="bottom" title="Modificar"></i></a></td>
                             <td><a href="<?php echo base_url('edicion_curso/delete') . '/' . $ediciones_curso[$i]->id; ?>" type="button" class="btn btn-default"><i class="fa fa-trash" data-placement="bottom" title="Eliminar"></i></a></td>
+                            <td><a href="<?php echo base_url('edicion_curso/ver_lista') . '/' . $ediciones_curso[$i]->id; ?>" type="button" class="btn btn-default"><i class="fa fa-list-ul" data-placement="bottom" title="Ver Lista"></i></a></td>
                         </tr>
                     <?php } ?>
                     </tbody>
