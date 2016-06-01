@@ -55,6 +55,7 @@
                 <div class="row">
                     <h3>Empleados</h3>
                 </div>
+                <br/>
                 <div class="row">
                     <div class="col-md-2"></div>
                     <div class="col-md-8">
@@ -86,6 +87,7 @@
                 <div class="row">
                     <h3>Agregar Empleados</h3>
                 </div>
+                <br/>
                 <div class="row">
                     <div class="col-md-2"></div>
                     <div class="col-md-8">
@@ -113,6 +115,13 @@
                         </table>
                     </div>
                 </div>
+                <br/><br/>
+                <div class="form-group">
+                    <div class="col-sm-offset-8 col-lg-8 col-sm-8 text-left">
+                        <input type="cancel" class="btn btn-danger" value="Cancelar" onClick="location.href='<?php echo base_url('edicion_curso'); ?>'"/>
+                    </div>
+                </div>
+                <br/><br/>
 
             </div>
 
